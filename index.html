@@ -37,7 +37,7 @@
         <script src="js/tailDT.js"></script>
 <script src="js/nouislider.min.js"></script>
 <script src="js/wNumb.js"></script>
-        <script src="data/voting_v20_1.js"></script>
+        <script src="data/voting_data_integrated_polling_places_1.js"></script>
         <script>
         var highlightLayer;
         function highlightFeature(e) {
@@ -53,17 +53,19 @@
                 fillOpacity: 1
               });
             }
-            highlightLayer.openPopup();
         }
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[42.80459363558657,-88.25677829193464],[43.190848805675486,-87.60575582612893]]);
+        })
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
         L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
         }
         map.createPane('pane_OpenStreetMap_0');
         map.getPane('pane_OpenStreetMap_0').style.zIndex = 400;
@@ -78,18 +80,11 @@
         });
         layer_OpenStreetMap_0;
         map.addLayer(layer_OpenStreetMap_0);
-        function pop_voting_v20_1(feature, layer) {
+        function pop_voting_data_integrated_polling_places_1(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (i in e.target._eventParents) {
                         e.target._eventParents[i].resetStyle(e.target);
-                    }
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
                     }
                 },
                 mouseover: highlightFeature,
@@ -128,13 +123,34 @@
                     <tr>\
                         <td colspan="2"><strong>median_income</strong><br />' + (feature.properties['median_income'] !== null ? autolinker.link(feature.properties['median_income'].toLocaleString()) : '') + '</td>\
                     </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>precinct</strong><br />' + (feature.properties['precinct'] !== null ? autolinker.link(feature.properties['precinct'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>polling_address</strong><br />' + (feature.properties['polling_address'] !== null ? autolinker.link(feature.properties['polling_address'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>polling_place</strong><br />' + (feature.properties['polling_place'] !== null ? autolinker.link(feature.properties['polling_place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>closest_early_voting_loc</strong><br />' + (feature.properties['closest_early_voting_loc'] !== null ? autolinker.link(feature.properties['closest_early_voting_loc'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>closest_ballot_drop_off_loc</strong><br />' + (feature.properties['closest_ballot_drop_off_loc'] !== null ? autolinker.link(feature.properties['closest_ballot_drop_off_loc'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>fraction_single_family</strong><br />' + (feature.properties['fraction_single_family'] !== null ? autolinker.link(feature.properties['fraction_single_family'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>fraction_multi_family</strong><br />' + (feature.properties['fraction_multi_family'] !== null ? autolinker.link(feature.properties['fraction_multi_family'].toLocaleString()) : '') + '</td>\
+                    </tr>\
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_voting_v20_1_0() {
+        function style_voting_data_integrated_polling_places_1_0() {
             return {
-                pane: 'pane_voting_v20_1',
+                pane: 'pane_voting_data_integrated_polling_places_1',
                 opacity: 1,
                 color: 'rgba(0,0,0,1.0)',
                 dashArray: '',
@@ -145,20 +161,20 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_voting_v20_1');
-        map.getPane('pane_voting_v20_1').style.zIndex = 401;
-        map.getPane('pane_voting_v20_1').style['mix-blend-mode'] = 'normal';
-        var layer_voting_v20_1 = new L.geoJson(json_voting_v20_1, {
+        map.createPane('pane_voting_data_integrated_polling_places_1');
+        map.getPane('pane_voting_data_integrated_polling_places_1').style.zIndex = 401;
+        map.getPane('pane_voting_data_integrated_polling_places_1').style['mix-blend-mode'] = 'normal';
+        var layer_voting_data_integrated_polling_places_1 = new L.geoJson(json_voting_data_integrated_polling_places_1, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_voting_v20_1',
-            layerName: 'layer_voting_v20_1',
-            pane: 'pane_voting_v20_1',
-            onEachFeature: pop_voting_v20_1,
-            style: style_voting_v20_1_0,
+            dataVar: 'json_voting_data_integrated_polling_places_1',
+            layerName: 'layer_voting_data_integrated_polling_places_1',
+            pane: 'pane_voting_data_integrated_polling_places_1',
+            onEachFeature: pop_voting_data_integrated_polling_places_1,
+            style: style_voting_data_integrated_polling_places_1_0,
         });
-        bounds_group.addLayer(layer_voting_v20_1);
-        map.addLayer(layer_voting_v20_1);
+        bounds_group.addLayer(layer_voting_data_integrated_polling_places_1);
+        map.addLayer(layer_voting_data_integrated_polling_places_1);
         var osmGeocoder = new L.Control.Geocoder({
             collapsed: true,
             position: 'topleft',
@@ -189,7 +205,7 @@
         document.getElementById("all").appendChild(col1);
         document.getElementById("all").appendChild(col2);
         col1.appendChild(mapDiv)
-        var Filters = {"proportion_dem": "real","potential_new_voters": "real","proportion_hispanic": "real","median_age": "real","median_income": "real","households": "real","proportion_new_voters": "real"};
+        var Filters = {"median_income": "real","proportion_hispanic": "real","proportion_new_voters": "real","fraction_single_family": "real","households": "real","median_age": "real","fraction_multi_family": "real","proportion_dem": "real","total_pop": "real","potential_new_voters": "real"};
         function filterFunc() {
           map.eachLayer(function(lyr){
           if ("options" in lyr && "dataVar" in lyr["options"]){
@@ -281,66 +297,34 @@
         }
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
-            var div_proportion_dem = document.createElement("div");
-            div_proportion_dem.id = "div_proportion_dem";
-            div_proportion_dem.className = "slider";
-            document.getElementById("menu").appendChild(div_proportion_dem);
-            var lab_proportion_dem = document.createElement('div');
-            lab_proportion_dem.innerHTML  = 'proportion_dem: <span id="val_proportion_dem"></span>';
-            lab_proportion_dem.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_proportion_dem);
-            var reset_proportion_dem = document.createElement('div');
-            reset_proportion_dem.innerHTML = 'clear filter';
-            reset_proportion_dem.className = 'filterlabel';
-            lab_proportion_dem.className = 'filterlabel';
-            reset_proportion_dem.onclick = function() {
-                sel_proportion_dem.noUiSlider.reset();
+            var div_median_income = document.createElement("div");
+            div_median_income.id = "div_median_income";
+            div_median_income.className = "slider";
+            document.getElementById("menu").appendChild(div_median_income);
+            var lab_median_income = document.createElement('div');
+            lab_median_income.innerHTML  = 'median_income: <span id="val_median_income"></span>';
+            lab_median_income.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_median_income);
+            var reset_median_income = document.createElement('div');
+            reset_median_income.innerHTML = 'clear filter';
+            reset_median_income.className = 'filterlabel';
+            lab_median_income.className = 'filterlabel';
+            reset_median_income.onclick = function() {
+                sel_median_income.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_proportion_dem);
-            var sel_proportion_dem = document.getElementById('div_proportion_dem');
-            noUiSlider.create(sel_proportion_dem, {
+            document.getElementById("menu").appendChild(reset_median_income);
+            var sel_median_income = document.getElementById('div_median_income');
+            noUiSlider.create(sel_median_income, {
                 connect: true,
-                start: [0.37383485136921824, 0.9897783731625195],
+                start: [7872.0, 250001.0],
                 range: {
-                min: 0.37383485136921824,
-                max: 0.9897783731625195
+                min: 7872.0,
+                max: 250001.0
                 }
             });
-            sel_proportion_dem.noUiSlider.on('update', function (values) {
-            val_proportion_dem = document.getElementById('val_proportion_dem');
-            val_proportion_dem.innerHTML = values.join(' - ');
-                filterFunc()
-            });
-            document.getElementById("menu").appendChild(
-                document.createElement("div"));
-            var div_potential_new_voters = document.createElement("div");
-            div_potential_new_voters.id = "div_potential_new_voters";
-            div_potential_new_voters.className = "slider";
-            document.getElementById("menu").appendChild(div_potential_new_voters);
-            var lab_potential_new_voters = document.createElement('div');
-            lab_potential_new_voters.innerHTML  = 'potential_new_voters: <span id="val_potential_new_voters"></span>';
-            lab_potential_new_voters.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_potential_new_voters);
-            var reset_potential_new_voters = document.createElement('div');
-            reset_potential_new_voters.innerHTML = 'clear filter';
-            reset_potential_new_voters.className = 'filterlabel';
-            lab_potential_new_voters.className = 'filterlabel';
-            reset_potential_new_voters.onclick = function() {
-                sel_potential_new_voters.noUiSlider.reset();
-            };
-            document.getElementById("menu").appendChild(reset_potential_new_voters);
-            var sel_potential_new_voters = document.getElementById('div_potential_new_voters');
-            noUiSlider.create(sel_potential_new_voters, {
-                connect: true,
-                start: [68.83295034352531, 2713.659966840179],
-                range: {
-                min: 68.83295034352531,
-                max: 2713.659966840179
-                }
-            });
-            sel_potential_new_voters.noUiSlider.on('update', function (values) {
-            val_potential_new_voters = document.getElementById('val_potential_new_voters');
-            val_potential_new_voters.innerHTML = values.join(' - ');
+            sel_median_income.noUiSlider.on('update', function (values) {
+            val_median_income = document.getElementById('val_median_income');
+            val_median_income.innerHTML = values.join(' - ');
                 filterFunc()
             });
             document.getElementById("menu").appendChild(
@@ -377,66 +361,66 @@
             });
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
-            var div_median_age = document.createElement("div");
-            div_median_age.id = "div_median_age";
-            div_median_age.className = "slider";
-            document.getElementById("menu").appendChild(div_median_age);
-            var lab_median_age = document.createElement('div');
-            lab_median_age.innerHTML  = 'median_age: <span id="val_median_age"></span>';
-            lab_median_age.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_median_age);
-            var reset_median_age = document.createElement('div');
-            reset_median_age.innerHTML = 'clear filter';
-            reset_median_age.className = 'filterlabel';
-            lab_median_age.className = 'filterlabel';
-            reset_median_age.onclick = function() {
-                sel_median_age.noUiSlider.reset();
+            var div_proportion_new_voters = document.createElement("div");
+            div_proportion_new_voters.id = "div_proportion_new_voters";
+            div_proportion_new_voters.className = "slider";
+            document.getElementById("menu").appendChild(div_proportion_new_voters);
+            var lab_proportion_new_voters = document.createElement('div');
+            lab_proportion_new_voters.innerHTML  = 'proportion_new_voters: <span id="val_proportion_new_voters"></span>';
+            lab_proportion_new_voters.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_proportion_new_voters);
+            var reset_proportion_new_voters = document.createElement('div');
+            reset_proportion_new_voters.innerHTML = 'clear filter';
+            reset_proportion_new_voters.className = 'filterlabel';
+            lab_proportion_new_voters.className = 'filterlabel';
+            reset_proportion_new_voters.onclick = function() {
+                sel_proportion_new_voters.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_median_age);
-            var sel_median_age = document.getElementById('div_median_age');
-            noUiSlider.create(sel_median_age, {
+            document.getElementById("menu").appendChild(reset_proportion_new_voters);
+            var sel_proportion_new_voters = document.getElementById('div_proportion_new_voters');
+            noUiSlider.create(sel_proportion_new_voters, {
                 connect: true,
-                start: [15.4, 68.4],
+                start: [0.16988326497714823, 0.8228198807884108],
                 range: {
-                min: 15.4,
-                max: 68.4
+                min: 0.16988326497714823,
+                max: 0.8228198807884108
                 }
             });
-            sel_median_age.noUiSlider.on('update', function (values) {
-            val_median_age = document.getElementById('val_median_age');
-            val_median_age.innerHTML = values.join(' - ');
+            sel_proportion_new_voters.noUiSlider.on('update', function (values) {
+            val_proportion_new_voters = document.getElementById('val_proportion_new_voters');
+            val_proportion_new_voters.innerHTML = values.join(' - ');
                 filterFunc()
             });
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
-            var div_median_income = document.createElement("div");
-            div_median_income.id = "div_median_income";
-            div_median_income.className = "slider";
-            document.getElementById("menu").appendChild(div_median_income);
-            var lab_median_income = document.createElement('div');
-            lab_median_income.innerHTML  = 'median_income: <span id="val_median_income"></span>';
-            lab_median_income.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_median_income);
-            var reset_median_income = document.createElement('div');
-            reset_median_income.innerHTML = 'clear filter';
-            reset_median_income.className = 'filterlabel';
-            lab_median_income.className = 'filterlabel';
-            reset_median_income.onclick = function() {
-                sel_median_income.noUiSlider.reset();
+            var div_fraction_single_family = document.createElement("div");
+            div_fraction_single_family.id = "div_fraction_single_family";
+            div_fraction_single_family.className = "slider";
+            document.getElementById("menu").appendChild(div_fraction_single_family);
+            var lab_fraction_single_family = document.createElement('div');
+            lab_fraction_single_family.innerHTML  = 'fraction_single_family: <span id="val_fraction_single_family"></span>';
+            lab_fraction_single_family.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_fraction_single_family);
+            var reset_fraction_single_family = document.createElement('div');
+            reset_fraction_single_family.innerHTML = 'clear filter';
+            reset_fraction_single_family.className = 'filterlabel';
+            lab_fraction_single_family.className = 'filterlabel';
+            reset_fraction_single_family.onclick = function() {
+                sel_fraction_single_family.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_median_income);
-            var sel_median_income = document.getElementById('div_median_income');
-            noUiSlider.create(sel_median_income, {
+            document.getElementById("menu").appendChild(reset_fraction_single_family);
+            var sel_fraction_single_family = document.getElementById('div_fraction_single_family');
+            noUiSlider.create(sel_fraction_single_family, {
                 connect: true,
-                start: [7872.0, 250001.0],
+                start: [0.00566251415628539, 1.0],
                 range: {
-                min: 7872.0,
-                max: 250001.0
+                min: 0.00566251415628539,
+                max: 1.0
                 }
             });
-            sel_median_income.noUiSlider.on('update', function (values) {
-            val_median_income = document.getElementById('val_median_income');
-            val_median_income.innerHTML = values.join(' - ');
+            sel_fraction_single_family.noUiSlider.on('update', function (values) {
+            val_fraction_single_family = document.getElementById('val_fraction_single_family');
+            val_fraction_single_family.innerHTML = values.join(' - ');
                 filterFunc()
             });
             document.getElementById("menu").appendChild(
@@ -473,34 +457,162 @@
             });
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
-            var div_proportion_new_voters = document.createElement("div");
-            div_proportion_new_voters.id = "div_proportion_new_voters";
-            div_proportion_new_voters.className = "slider";
-            document.getElementById("menu").appendChild(div_proportion_new_voters);
-            var lab_proportion_new_voters = document.createElement('div');
-            lab_proportion_new_voters.innerHTML  = 'proportion_new_voters: <span id="val_proportion_new_voters"></span>';
-            lab_proportion_new_voters.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_proportion_new_voters);
-            var reset_proportion_new_voters = document.createElement('div');
-            reset_proportion_new_voters.innerHTML = 'clear filter';
-            reset_proportion_new_voters.className = 'filterlabel';
-            lab_proportion_new_voters.className = 'filterlabel';
-            reset_proportion_new_voters.onclick = function() {
-                sel_proportion_new_voters.noUiSlider.reset();
+            var div_median_age = document.createElement("div");
+            div_median_age.id = "div_median_age";
+            div_median_age.className = "slider";
+            document.getElementById("menu").appendChild(div_median_age);
+            var lab_median_age = document.createElement('div');
+            lab_median_age.innerHTML  = 'median_age: <span id="val_median_age"></span>';
+            lab_median_age.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_median_age);
+            var reset_median_age = document.createElement('div');
+            reset_median_age.innerHTML = 'clear filter';
+            reset_median_age.className = 'filterlabel';
+            lab_median_age.className = 'filterlabel';
+            reset_median_age.onclick = function() {
+                sel_median_age.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_proportion_new_voters);
-            var sel_proportion_new_voters = document.getElementById('div_proportion_new_voters');
-            noUiSlider.create(sel_proportion_new_voters, {
+            document.getElementById("menu").appendChild(reset_median_age);
+            var sel_median_age = document.getElementById('div_median_age');
+            noUiSlider.create(sel_median_age, {
                 connect: true,
-                start: [0.16988326497714823, 0.8228198807884108],
+                start: [15.4, 68.4],
                 range: {
-                min: 0.16988326497714823,
-                max: 0.8228198807884108
+                min: 15.4,
+                max: 68.4
                 }
             });
-            sel_proportion_new_voters.noUiSlider.on('update', function (values) {
-            val_proportion_new_voters = document.getElementById('val_proportion_new_voters');
-            val_proportion_new_voters.innerHTML = values.join(' - ');
+            sel_median_age.noUiSlider.on('update', function (values) {
+            val_median_age = document.getElementById('val_median_age');
+            val_median_age.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_fraction_multi_family = document.createElement("div");
+            div_fraction_multi_family.id = "div_fraction_multi_family";
+            div_fraction_multi_family.className = "slider";
+            document.getElementById("menu").appendChild(div_fraction_multi_family);
+            var lab_fraction_multi_family = document.createElement('div');
+            lab_fraction_multi_family.innerHTML  = 'fraction_multi_family: <span id="val_fraction_multi_family"></span>';
+            lab_fraction_multi_family.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_fraction_multi_family);
+            var reset_fraction_multi_family = document.createElement('div');
+            reset_fraction_multi_family.innerHTML = 'clear filter';
+            reset_fraction_multi_family.className = 'filterlabel';
+            lab_fraction_multi_family.className = 'filterlabel';
+            reset_fraction_multi_family.onclick = function() {
+                sel_fraction_multi_family.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_fraction_multi_family);
+            var sel_fraction_multi_family = document.getElementById('div_fraction_multi_family');
+            noUiSlider.create(sel_fraction_multi_family, {
+                connect: true,
+                start: [0.004318292594397835, 0.8354519435250476],
+                range: {
+                min: 0.004318292594397835,
+                max: 0.8354519435250476
+                }
+            });
+            sel_fraction_multi_family.noUiSlider.on('update', function (values) {
+            val_fraction_multi_family = document.getElementById('val_fraction_multi_family');
+            val_fraction_multi_family.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_proportion_dem = document.createElement("div");
+            div_proportion_dem.id = "div_proportion_dem";
+            div_proportion_dem.className = "slider";
+            document.getElementById("menu").appendChild(div_proportion_dem);
+            var lab_proportion_dem = document.createElement('div');
+            lab_proportion_dem.innerHTML  = 'proportion_dem: <span id="val_proportion_dem"></span>';
+            lab_proportion_dem.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_proportion_dem);
+            var reset_proportion_dem = document.createElement('div');
+            reset_proportion_dem.innerHTML = 'clear filter';
+            reset_proportion_dem.className = 'filterlabel';
+            lab_proportion_dem.className = 'filterlabel';
+            reset_proportion_dem.onclick = function() {
+                sel_proportion_dem.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_proportion_dem);
+            var sel_proportion_dem = document.getElementById('div_proportion_dem');
+            noUiSlider.create(sel_proportion_dem, {
+                connect: true,
+                start: [0.37383485136921824, 0.9897783731625195],
+                range: {
+                min: 0.37383485136921824,
+                max: 0.9897783731625195
+                }
+            });
+            sel_proportion_dem.noUiSlider.on('update', function (values) {
+            val_proportion_dem = document.getElementById('val_proportion_dem');
+            val_proportion_dem.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_total_pop = document.createElement("div");
+            div_total_pop.id = "div_total_pop";
+            div_total_pop.className = "slider";
+            document.getElementById("menu").appendChild(div_total_pop);
+            var lab_total_pop = document.createElement('div');
+            lab_total_pop.innerHTML  = 'total_pop: <span id="val_total_pop"></span>';
+            lab_total_pop.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_total_pop);
+            var reset_total_pop = document.createElement('div');
+            reset_total_pop.innerHTML = 'clear filter';
+            reset_total_pop.className = 'filterlabel';
+            lab_total_pop.className = 'filterlabel';
+            reset_total_pop.onclick = function() {
+                sel_total_pop.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_total_pop);
+            var sel_total_pop = document.getElementById('div_total_pop');
+            noUiSlider.create(sel_total_pop, {
+                connect: true,
+                start: [203.0, 3536.0],
+                range: {
+                min: 203.0,
+                max: 3536.0
+                }
+            });
+            sel_total_pop.noUiSlider.on('update', function (values) {
+            val_total_pop = document.getElementById('val_total_pop');
+            val_total_pop.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_potential_new_voters = document.createElement("div");
+            div_potential_new_voters.id = "div_potential_new_voters";
+            div_potential_new_voters.className = "slider";
+            document.getElementById("menu").appendChild(div_potential_new_voters);
+            var lab_potential_new_voters = document.createElement('div');
+            lab_potential_new_voters.innerHTML  = 'potential_new_voters: <span id="val_potential_new_voters"></span>';
+            lab_potential_new_voters.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_potential_new_voters);
+            var reset_potential_new_voters = document.createElement('div');
+            reset_potential_new_voters.innerHTML = 'clear filter';
+            reset_potential_new_voters.className = 'filterlabel';
+            lab_potential_new_voters.className = 'filterlabel';
+            reset_potential_new_voters.onclick = function() {
+                sel_potential_new_voters.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_potential_new_voters);
+            var sel_potential_new_voters = document.getElementById('div_potential_new_voters');
+            noUiSlider.create(sel_potential_new_voters, {
+                connect: true,
+                start: [68.83295034352531, 2713.659966840179],
+                range: {
+                min: 68.83295034352531,
+                max: 2713.659966840179
+                }
+            });
+            sel_potential_new_voters.noUiSlider.on('update', function (values) {
+            val_potential_new_voters = document.getElementById('val_potential_new_voters');
+            val_potential_new_voters.innerHTML = values.join(' - ');
                 filterFunc()
             });
         </script>
